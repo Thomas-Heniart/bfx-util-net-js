@@ -1,12 +1,10 @@
 'use strict'
 
 const _ = require('lodash')
-const dns = require('dns')
+const dns = require('dns').promises
 
 const { Api } = require('bfx-wrk-api')
 
-const { promisify } = require('util')
-const reverseDns = promisify(dns.reverse)
 class UtilNet extends Api {
   space (service, msg) {
     const space = super.space(service, msg)
@@ -21,7 +19,7 @@ class UtilNet extends Api {
 
     let dnsData = null
     try {
-      dnsData = await reverseDns(ip)
+      dnsData = await dns.reverse(ip)
     } catch (err) {
       console.warn('An error occurred during DNS reverse lookup. Err=[%s]', err)
     }
@@ -90,12 +88,13 @@ class UtilNet extends Api {
     cb(null, res)
   }
 
-  getReverseDns (space, ip, cb) {
-    dns.reverse(ip, (err, data) => {
-      if (err) return cb(err)
-
-      cb(null, [ip, data])
-    })
+  async getReverseDns (space, ip, cb) {
+    try {
+      const dnsData = await dns.reverse(ip)
+      return cb(null, [ip, dnsData])
+    } catch (err) {
+      return cb(err)
+    }
   }
 
   _getGeoIp (ip) {
