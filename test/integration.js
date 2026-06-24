@@ -242,7 +242,7 @@ describe('RPC integration', () => {
         )
 
         const res = data[1]
-        assert.strictEqual(res.connection_type, 'Cable/DSL')
+        assert.strictEqual(res.connection_type, 'Corporate')
         done()
       } catch (err) {
         done(err)
