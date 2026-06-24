@@ -54,6 +54,7 @@ npm run update-geo-data
 npm run update-asn-data
 npm run update-isp-data
 npm run update-connection-type-data
+npm run update-anonymous-plus-data
 ```
 
 ### Periodic Updates for Geo/ASN data
